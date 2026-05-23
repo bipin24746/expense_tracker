@@ -10,26 +10,35 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(360, 690),
       minTextAdapt: true,
       splitScreenMode: true,
-      child: MaterialApp.router(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          iconTheme: IconThemeData(color: AppColors.navIcon),
-          appBarTheme: AppBarTheme(backgroundColor: AppColors.navBar,
-            titleTextStyle: TextStyle(color: AppColors.navText,fontWeight: FontWeight.bold,fontSize: 22.sp),
+      builder: (context, child) {
+        return MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            iconTheme: IconThemeData(
+              color: AppColors.navIcon,
+            ),
+            appBarTheme: AppBarTheme(
+              backgroundColor: AppColors.navBar,
+              titleTextStyle: TextStyle(
+                color: AppColors.navText,
+                fontWeight: FontWeight.bold,
+                fontSize: 22.sp,
+              ),
+            ),
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: Colors.deepPurple,
+            ),
           ),
-          colorScheme: .fromSeed(seedColor: Colors.deepPurple),
-        ),
-        routerConfig: router,
-      
-      ),
+          routerConfig: router,
+        );
+      },
     );
   }
 }

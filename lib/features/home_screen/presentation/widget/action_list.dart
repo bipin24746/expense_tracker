@@ -7,25 +7,32 @@ class ActionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        actionList(Icons.fastfood, "Food"),
-        actionList(Icons.directions_car, "Transport"),
-        actionList(Icons.house, "Housing"),
-        Column(
+        Text("Actions",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15.sp),),
+        SizedBox(height: 10.h,),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SizedBox(
-              height: 50.h,
-              width: 55.w,
-              child: Container(decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(10.r)),
-              child: Center(child: Text("+",style: TextStyle(color: AppColors.text,fontSize: 40.sp),)),),
-            ),
-            Text("New",style: TextStyle(fontSize: 13.sp,fontWeight: FontWeight.bold),)
+            actionList(Icons.fastfood, "Food"),
+            actionList(Icons.directions_car, "Transport"),
+            actionList(Icons.house, "Housing"),
+            Column(
+              children: [
+                SizedBox(
+                  height: 50.h,
+                  width: 55.w,
+                  child: Container(decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(10.r)),
+                  child: Center(child: Text("+",style: TextStyle(color: AppColors.text,fontSize: 40.sp),)),),
+                ),
+                Text("New",style: TextStyle(fontSize: 13.sp,fontWeight: FontWeight.bold),)
+              ],
+            )
           ],
-        )
+        ),
       ],
     );
   }

@@ -1,5 +1,6 @@
 import 'package:expense_tracker/core/utils/colors.dart';
 import 'package:expense_tracker/features/budget_screen/presentation/widget/balance_card.dart';
+import 'package:expense_tracker/features/budget_screen/presentation/widget/bottom_sheet.dart';
 import 'package:expense_tracker/features/budget_screen/presentation/widget/categories.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -50,7 +51,13 @@ class _BudgetScreenState extends State<BudgetScreen> {
                 ),
                 SizedBox(
                     height: 30.h,
-                    child: ElevatedButton(onPressed: (){}, child: Text("+")))
+                    child: ElevatedButton(onPressed: (){
+                      showModalBottomSheet(
+                          isScrollControlled: true,
+                          context: context, builder: (context){
+                        return BottomSheetBudgetTracker();
+                      });
+                    }, child: Text("+")))
               ],
             ),
             SizedBox(height: 10.h,),

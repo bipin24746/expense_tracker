@@ -11,7 +11,6 @@ class Categories extends StatelessWidget {
     return Consumer(
       builder: (context,ref,_) {
         final transaction = ref.watch(budgetNotifierProvider);
-
         return Column(
           children: [
             /// Header

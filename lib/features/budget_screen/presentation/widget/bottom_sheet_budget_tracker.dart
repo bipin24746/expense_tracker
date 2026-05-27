@@ -1,3 +1,4 @@
+import 'package:expense_tracker/features/add_categories_screen/notifier/add_categories_notifier.dart';
 import 'package:expense_tracker/features/budget_screen/notifier/budget_tracker_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,18 +17,21 @@ class _BottomSheetBudgetTrackerState extends State<BottomSheetBudgetTracker> {
 
   final TextEditingController noteController = TextEditingController();
 
-  String selectedCategory = 'Food';
+  String? selectedCategory;
+  // String selectedCategory = 'Food';
   String selectedType = 'Expense';
 
-  final List<String> categories = [
-    'Food',
-    'Shopping',
-    'Transport',
-    'Bills',
-    'Entertainment',
-    'Health',
-  ];
+  // final List<String> categories = [
+  //   'Food',
+  //   'Shopping',
+  //   'Transport',
+  //   'Bills',
+  //   'Entertainment',
+  //   'Health',
+  // ];
 
+
+  final List<String> categories = [];
   final List<String> types = ['Expense', 'Income'];
 
   @override
@@ -86,28 +90,33 @@ class _BottomSheetBudgetTrackerState extends State<BottomSheetBudgetTracker> {
 
                 SizedBox(height: 8.h),
 
-                DropdownButtonFormField<String>(
-                  value: selectedCategory,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(14.r),
-                    ),
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 16.w,
-                      vertical: 14.h,
-                    ),
-                  ),
-                  items: categories.map((category) {
-                    return DropdownMenuItem(
-                      value: category,
-                      child: Text(category),
+                Consumer(
+                  builder: (context,ref,_) {
+                    final categories = ref.watch(addCategoryNotifierProvider);
+                    return DropdownButtonFormField<String>(
+                      value: selectedCategory,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(14.r),
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 16.w,
+                          vertical: 14.h,
+                        ),
+                      ),
+                      items: categories.map((category) {
+                        return DropdownMenuItem(
+                          value: category.name,
+                          child: Text(category.name),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          selectedCategory = value!;
+                        });
+                      },
                     );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      selectedCategory = value!;
-                    });
-                  },
+                  }
                 ),
 
                 SizedBox(height: 20.h),
@@ -225,7 +234,7 @@ class _BottomSheetBudgetTrackerState extends State<BottomSheetBudgetTracker> {
                       ref
                           .read(budgetNotifierProvider.notifier)
                           .add(
-                            category: selectedCategory,
+                            category: selectedCategory!,
                             amount: int.parse(amountController.text),
                             type: selectedType,
                         notes: noteController.text

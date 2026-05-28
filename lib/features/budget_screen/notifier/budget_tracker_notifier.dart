@@ -16,6 +16,7 @@ class BudgetTrackerNotifier extends Notifier<List<BudgetTrackerModel>> {
     final budgetTracker = BudgetTrackerModel(type, amount, category, notes!);
     state = [...state,budgetTracker];
   }
+
 }
 
 final budgetNotifierProvider =

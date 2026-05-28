@@ -8,4 +8,5 @@ class AppColors{
   static const Color navIcon = Colors.white;
   static const Color card = Color(0xFF1b156b);
   static const Color text = Colors.white;
+  static const Color error = Colors.red;
 }

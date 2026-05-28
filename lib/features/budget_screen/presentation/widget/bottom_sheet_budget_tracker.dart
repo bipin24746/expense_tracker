@@ -94,6 +94,7 @@ class _BottomSheetBudgetTrackerState extends State<BottomSheetBudgetTracker> {
                   builder: (context,ref,_) {
                     final categories = ref.watch(addCategoryNotifierProvider);
                     return DropdownButtonFormField<String>(
+                      hint: Text("Select Category"),
                       value: selectedCategory,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(

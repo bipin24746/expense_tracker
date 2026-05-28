@@ -3,5 +3,6 @@ import 'package:flutter/cupertino.dart';
 class CategoriesModel {
   String name;
   String icon;
-  CategoriesModel(this.name,this.icon);
+  bool isSelected;
+  CategoriesModel({required this.name,required this.icon,this.isSelected = false});
 }

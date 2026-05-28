@@ -7,14 +7,22 @@ class AddCategoriesNotifier extends Notifier<List<CategoriesModel>> {
   List<CategoriesModel> build() {
     return [
       CategoriesModel(
-        'Pizza', '🐶'
+        name: 'Pizza', icon: '🐶',
       )
     ];
   }
 
   void add({required String name, required String icon}) {
-    final addCategory = CategoriesModel(name, icon);
+    final addCategory = CategoriesModel(name: name, icon: icon);
     state = [...state, addCategory];
+  }
+  void delete({required String name}){
+    state = state.where((category) => category.name != name).toList();
+  }
+
+  void selectedCategory({required String name})
+  {
+
   }
 }
 
@@ -22,3 +30,4 @@ final addCategoryNotifierProvider =
     NotifierProvider<AddCategoriesNotifier, List<CategoriesModel>>(
       () => AddCategoriesNotifier(),
     );
+

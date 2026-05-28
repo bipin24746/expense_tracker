@@ -62,7 +62,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
             ),
             SizedBox(height: 10.h,),
             BalanceCard(),
-            SizedBox(height: 10.h,),
+            SizedBox(height: 20.h,),
             Categories()
 
           ],

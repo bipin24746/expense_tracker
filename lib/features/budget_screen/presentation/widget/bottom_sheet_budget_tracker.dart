@@ -91,33 +91,40 @@ class _BottomSheetBudgetTrackerState extends State<BottomSheetBudgetTracker> {
                 SizedBox(height: 8.h),
 
                 Consumer(
-                  builder: (context,ref,_) {
+                  builder: (context, ref, _) {
                     final categories = ref.watch(addCategoryNotifierProvider);
-                    return DropdownButtonFormField<String>(
-                      hint: Text("Select Category"),
-                      value: selectedCategory,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(14.r),
-                        ),
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 16.w,
-                          vertical: 14.h,
-                        ),
-                      ),
-                      items: categories.map((category) {
-                        return DropdownMenuItem(
-                          value: category.name,
-                          child: Text(category.name),
+
+                    return ref.watch(addCategoryNotifierProvider).maybeWhen(
+                      orElse: () => const SizedBox(),
+                      loading: () => const CircularProgressIndicator(),
+                      data: (data) {
+                        return DropdownButtonFormField<String>(
+                          hint: const Text("Select Category"),
+                          value: selectedCategory,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(14.r),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 16.w,
+                              vertical: 14.h,
+                            ),
+                          ),
+                          items: data.map((category) {
+                            return DropdownMenuItem(
+                              value: category.name,
+                              child: Text(category.name),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedCategory = value!;
+                            });
+                          },
                         );
-                      }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          selectedCategory = value!;
-                        });
                       },
                     );
-                  }
+                  },
                 ),
 
                 SizedBox(height: 20.h),

@@ -13,9 +13,11 @@ class BudgetTrackerNotifier extends Notifier<List<BudgetTrackerModel>> {
     required String type,
     String? notes,
   }) {
+    // final addDb =
     final budgetTracker = BudgetTrackerModel(type, amount, category, notes!);
     state = [...state,budgetTracker];
   }
+
 
 }
 

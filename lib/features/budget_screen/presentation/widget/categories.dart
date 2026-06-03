@@ -49,40 +49,52 @@ class Categories extends StatelessWidget {
               Consumer(
                 builder: (context, ref, _) {
                   final categoriesList = ref.watch(addCategoryNotifierProvider);
-                  return SizedBox(
-                    height: 0.08.sh,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
+                  return ref.watch(addCategoryNotifierProvider).maybeWhen(orElse: ()=>SizedBox(),
+                    loading: () => CircularProgressIndicator(),
+                    data: (data){
+                      return SizedBox(
+                        height: 0.08.sh,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
 
-                      children: [
-                        Row(
                           children: [
-                            for (var categoryList in categoriesList)
-                              Padding(
-                                padding: EdgeInsets.all(8.w),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.blue),
-                                    color: Colors.blue,
-                                    borderRadius: BorderRadius.circular(25.r),
-                                  ),
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 18.w,
-                                      vertical: 5.h,
+                            Row(
+                              children: [
+                                for (var categoryList in data)
+                                  Padding(
+                                    padding: EdgeInsets.all(8.w),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        print(categoryList.name);
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          border: Border.all(color: Colors.blue),
+                                          color: Colors.blue,
+                                          borderRadius: BorderRadius.circular(25.r),
+                                        ),
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 18.w,
+                                            vertical: 5.h,
+                                          ),
+                                          child: Text(
+                                            categoryList.name,
+                                            style: TextStyle(color: AppColors.text),
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                    child: Text(
-                                      categoryList.name,
-                                      style: TextStyle(color: AppColors.text),
-                                    ),
                                   ),
-                                ),
-                              ),
+                              ],
+                            ),
                           ],
                         ),
-                      ],
-                    ),
+                      );
+                    }
                   );
+                  // final filterCategories = ref.read(addCategoryNotifierProvider).where((filteredCategories) => ,);
+
                 },
               ),
 

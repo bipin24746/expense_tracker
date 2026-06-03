@@ -94,90 +94,95 @@ class _AddCategoriesWidgetState extends State<AddCategoriesWidget> {
               Expanded(
                 child: Consumer(
                   builder: (context, ref, _) {
-                    final category = ref.watch(addCategoryNotifierProvider);
-                    return ListView.separated(
-                      itemCount: category.length,
-                      separatorBuilder: (_, __) => SizedBox(height: 12.h),
-                      itemBuilder: (context, index) {
-                        final currentCategory = category[index];
-                        final expandingAmount = ref
-                            .watch(budgetNotifierProvider)
-                            .where(
-                              (categoryName) =>
-                                  currentCategory.name == categoryName.category,
-                            );
+                    return ref.watch(addCategoryNotifierProvider).maybeWhen(orElse: () => SizedBox(),
 
-                        return ExpansionTile(
-                          title: Text(category[index].name),
+                      loading: () => CircularProgressIndicator(),
+                      data: (data) {
+                      return ListView.separated(
+                        itemCount: data.length,
+                        separatorBuilder: (_, __) => SizedBox(height: 12.h),
+                        itemBuilder: (context, index) {
+                          final currentCategory = data[index];
+                          final expandingAmount = ref
+                              .watch(budgetNotifierProvider)
+                              .where(
+                                (categoryName) =>
+                                    currentCategory.name == categoryName.category,
+                              );
 
-                          leading: Icon(Icons.food_bank),
-                          trailing: IconButton(onPressed: (){
-                            ref
-                                          .watch(
-                                            addCategoryNotifierProvider.notifier,
-                                          )
-                                          .delete(name: currentCategory.name);
+                          return ExpansionTile(
+                            title: Text(data[index].name),
 
-                          }, icon: Icon(Icons.delete)),
-                          children: [
-                            for (var expand in expandingAmount)
-                            Text(expand.amount.toString())
+                            leading: Icon(Icons.food_bank),
+                            trailing: IconButton(onPressed: (){
+                              ref
+                                            .watch(
+                                              addCategoryNotifierProvider.notifier,
+                                            )
+                                            .delete(name: currentCategory.name);
 
-                          ],
-                        );
+                            }, icon: Icon(Icons.delete)),
+                            children: [
+                              for (var expand in expandingAmount)
+                              Text(expand.amount.toString())
 
-                        // return Container(
-                        //   padding: EdgeInsets.symmetric(
-                        //     horizontal: 16.w,
-                        //     vertical: 14.h,
-                        //   ),
-                        //   decoration: BoxDecoration(
-                        //     color: Colors.grey.shade100,
-                        //     borderRadius: BorderRadius.circular(14.r),
-                        //   ),
-                        //   child: Row(
-                        //     children: [
-                        //       CircleAvatar(
-                        //         radius: 22.r,
-                        //         backgroundColor: Colors.orange,
-                        //         child: Icon(
-                        //           Icons.restaurant_menu,
-                        //           color: Colors.white,
-                        //           size: 20.sp,
-                        //         ),
-                        //       ),
-                        //
-                        //       SizedBox(width: 14.w),
-                        //
-                        //       Expanded(
-                        //         child: Text(
-                        //           category[index].name,
-                        //           style: TextStyle(
-                        //             fontSize: 16.sp,
-                        //             fontWeight: FontWeight.w500,
-                        //           ),
-                        //         ),
-                        //       ),
-                        //
-                        //       IconButton(
-                        //         onPressed: () {
-                        //           ref
-                        //               .watch(
-                        //                 addCategoryNotifierProvider.notifier,
-                        //               )
-                        //               .delete(name: currentCategory.name);
-                        //         },
-                        //         icon: Icon(
-                        //           Icons.delete_outline,
-                        //           color: Colors.red,
-                        //           size: 24.sp,
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // );
-                      },
-                    );
+                            ],
+                          );
+
+                          // return Container(
+                          //   padding: EdgeInsets.symmetric(
+                          //     horizontal: 16.w,
+                          //     vertical: 14.h,
+                          //   ),
+                          //   decoration: BoxDecoration(
+                          //     color: Colors.grey.shade100,
+                          //     borderRadius: BorderRadius.circular(14.r),
+                          //   ),
+                          //   child: Row(
+                          //     children: [
+                          //       CircleAvatar(
+                          //         radius: 22.r,
+                          //         backgroundColor: Colors.orange,
+                          //         child: Icon(
+                          //           Icons.restaurant_menu,
+                          //           color: Colors.white,
+                          //           size: 20.sp,
+                          //         ),
+                          //       ),
+                          //
+                          //       SizedBox(width: 14.w),
+                          //
+                          //       Expanded(
+                          //         child: Text(
+                          //           category[index].name,
+                          //           style: TextStyle(
+                          //             fontSize: 16.sp,
+                          //             fontWeight: FontWeight.w500,
+                          //           ),
+                          //         ),
+                          //       ),
+                          //
+                          //       IconButton(
+                          //         onPressed: () {
+                          //           ref
+                          //               .watch(
+                          //                 addCategoryNotifierProvider.notifier,
+                          //               )
+                          //               .delete(name: currentCategory.name);
+                          //         },
+                          //         icon: Icon(
+                          //           Icons.delete_outline,
+                          //           color: Colors.red,
+                          //           size: 24.sp,
+                          //         ),
+                          //       ),
+                          //     ],
+                          //   ),
+                          // );
+                        },
+                      );
+                    },);
+
                   },
                 ),
               ),

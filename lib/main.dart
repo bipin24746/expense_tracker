@@ -1,11 +1,15 @@
 import 'package:expense_tracker/core/utils/colors.dart';
+import 'package:expense_tracker/features/add_categories_screen/data/data_source/categories_local_data_source.dart';
 import 'package:expense_tracker/router/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-void main() {
-  runApp(ProviderScope(child: const MyApp()));
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+
+    runApp(ProviderScope(child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

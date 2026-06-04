@@ -1,5 +1,6 @@
 import 'package:expense_tracker/core/utils/colors.dart';
 import 'package:expense_tracker/features/add_categories_screen/notifier/add_categories_notifier.dart';
+import 'package:expense_tracker/features/add_categories_screen/widget/edit_categories_bottom_sheet.dart';
 import 'package:expense_tracker/features/budget_screen/notifier/budget_tracker_notifier.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -74,6 +75,7 @@ class _AddCategoriesWidgetState extends State<AddCategoriesWidget> {
                           );
                     }
                     print(categoryNameController.text);
+                    categoryNameController.clear();
                   },
                   icon: Icon(Icons.add, size: 20.sp),
                   label: Text(
@@ -94,95 +96,126 @@ class _AddCategoriesWidgetState extends State<AddCategoriesWidget> {
               Expanded(
                 child: Consumer(
                   builder: (context, ref, _) {
-                    return ref.watch(addCategoryNotifierProvider).maybeWhen(orElse: () => SizedBox(),
+                    return ref
+                        .watch(addCategoryNotifierProvider)
+                        .maybeWhen(
+                          orElse: () => SizedBox(),
 
-                      loading: () => CircularProgressIndicator(),
-                      data: (data) {
-                      return ListView.separated(
-                        itemCount: data.length,
-                        separatorBuilder: (_, __) => SizedBox(height: 12.h),
-                        itemBuilder: (context, index) {
-                          final currentCategory = data[index];
-                          final expandingAmount = ref
-                              .watch(budgetNotifierProvider)
-                              .where(
-                                (categoryName) =>
-                                    currentCategory.name == categoryName.category,
-                              );
+                          loading: () => CircularProgressIndicator(),
+                          data: (data) {
+                            return ListView.separated(
+                              itemCount: data.length,
+                              separatorBuilder: (_, __) =>
+                                  SizedBox(height: 12.h),
+                              itemBuilder: (context, index) {
+                                final currentCategory = data[index];
+                                final expandingAmount = ref
+                                    .watch(budgetNotifierProvider)
+                                    .where(
+                                      (categoryName) =>
+                                          currentCategory.name ==
+                                          categoryName.category,
+                                    );
 
-                          return ExpansionTile(
-                            title: Text(data[index].name),
+                                return ExpansionTile(
+                                  title: Text(data[index].name),
+                                  leading: Icon(Icons.food_bank),
+                                  trailing: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {
+                                          showModalBottomSheet(
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(5.r)),
+                                            context: context,
+                                            isScrollControlled: true,
+                                            builder: (context) {
+                                              return EditCategoriesBottomSheet(
+                                                name: data[index].name,
+                                                icon: data[index].icon,
+                                                id: data[index].id,
+                                              );
+                                            },
+                                          );
 
-                            leading: Icon(Icons.food_bank),
-                            trailing: IconButton(onPressed: (){
-                              ref
-                                            .watch(
-                                              addCategoryNotifierProvider.notifier,
-                                            )
-                                            .delete(name: currentCategory.name);
+                                          print(data[index].name);
+                                          print(data[index].id);
+                                        },
+                                        icon: Icon(Icons.edit),
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          ref
+                                              .watch(
+                                                addCategoryNotifierProvider
+                                                    .notifier,
+                                              )
+                                              .delete(id: currentCategory.id);
+                                        },
+                                        icon: Icon(Icons.delete),
+                                      ),
+                                    ],
+                                  ),
+                                  children: [
+                                    for (var expand in expandingAmount)
+                                      Text(expand.amount.toString()),
+                                  ],
+                                );
 
-                            }, icon: Icon(Icons.delete)),
-                            children: [
-                              for (var expand in expandingAmount)
-                              Text(expand.amount.toString())
-
-                            ],
-                          );
-
-                          // return Container(
-                          //   padding: EdgeInsets.symmetric(
-                          //     horizontal: 16.w,
-                          //     vertical: 14.h,
-                          //   ),
-                          //   decoration: BoxDecoration(
-                          //     color: Colors.grey.shade100,
-                          //     borderRadius: BorderRadius.circular(14.r),
-                          //   ),
-                          //   child: Row(
-                          //     children: [
-                          //       CircleAvatar(
-                          //         radius: 22.r,
-                          //         backgroundColor: Colors.orange,
-                          //         child: Icon(
-                          //           Icons.restaurant_menu,
-                          //           color: Colors.white,
-                          //           size: 20.sp,
-                          //         ),
-                          //       ),
-                          //
-                          //       SizedBox(width: 14.w),
-                          //
-                          //       Expanded(
-                          //         child: Text(
-                          //           category[index].name,
-                          //           style: TextStyle(
-                          //             fontSize: 16.sp,
-                          //             fontWeight: FontWeight.w500,
-                          //           ),
-                          //         ),
-                          //       ),
-                          //
-                          //       IconButton(
-                          //         onPressed: () {
-                          //           ref
-                          //               .watch(
-                          //                 addCategoryNotifierProvider.notifier,
-                          //               )
-                          //               .delete(name: currentCategory.name);
-                          //         },
-                          //         icon: Icon(
-                          //           Icons.delete_outline,
-                          //           color: Colors.red,
-                          //           size: 24.sp,
-                          //         ),
-                          //       ),
-                          //     ],
-                          //   ),
-                          // );
-                        },
-                      );
-                    },);
-
+                                // return Container(
+                                //   padding: EdgeInsets.symmetric(
+                                //     horizontal: 16.w,
+                                //     vertical: 14.h,
+                                //   ),
+                                //   decoration: BoxDecoration(
+                                //     color: Colors.grey.shade100,
+                                //     borderRadius: BorderRadius.circular(14.r),
+                                //   ),
+                                //   child: Row(
+                                //     children: [
+                                //       CircleAvatar(
+                                //         radius: 22.r,
+                                //         backgroundColor: Colors.orange,
+                                //         child: Icon(
+                                //           Icons.restaurant_menu,
+                                //           color: Colors.white,
+                                //           size: 20.sp,
+                                //         ),
+                                //       ),
+                                //
+                                //       SizedBox(width: 14.w),
+                                //
+                                //       Expanded(
+                                //         child: Text(
+                                //           category[index].name,
+                                //           style: TextStyle(
+                                //             fontSize: 16.sp,
+                                //             fontWeight: FontWeight.w500,
+                                //           ),
+                                //         ),
+                                //       ),
+                                //
+                                //       IconButton(
+                                //         onPressed: () {
+                                //           ref
+                                //               .watch(
+                                //                 addCategoryNotifierProvider.notifier,
+                                //               )
+                                //               .delete(name: currentCategory.name);
+                                //         },
+                                //         icon: Icon(
+                                //           Icons.delete_outline,
+                                //           color: Colors.red,
+                                //           size: 24.sp,
+                                //         ),
+                                //       ),
+                                //     ],
+                                //   ),
+                                // );
+                              },
+                            );
+                          },
+                        );
                   },
                 ),
               ),

@@ -32,9 +32,9 @@ class AppDatabase extends _$AppDatabase {
     );
   }
 
-  Future<void> deleteCategory({required String name}) {
+  Future<void> deleteCategory({required int id}) {
     return (delete(categoriesLocalDataSource)
-      ..where((t) => t.name.equals(name)))
+      ..where((t) => t.id.equals(id)))
         .go();
   }
 

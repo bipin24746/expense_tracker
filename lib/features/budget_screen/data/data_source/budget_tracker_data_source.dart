@@ -7,6 +7,4 @@ class BudgetTrackerDataSource extends Table {
   TextColumn get category => text().named('category')();
   TextColumn get notes => text().named('notes')();
 
-
-
 }
